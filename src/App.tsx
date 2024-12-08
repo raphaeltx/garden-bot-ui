@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Messages from "../../garden-bot-ui/src/components/Messages/Messages";
-import Input from "../../garden-bot-ui/src/components/Input/Input";
+import Messages from "./components/Messages/Messages";
+import Input from "./components/Input/Input";
 import "./App.css";
 import Header from "./components/Header/Header";
 import BotMessageService from "./services/bot-message/bot-message.service";
