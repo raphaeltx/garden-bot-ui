@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Messages from "../../garden-bot-ui/src/components/Messages/Messages";
+import Input from "../../garden-bot-ui/src/components/Input/Input";
+import "./App.css";
+import Header from "./components/Header/Header";
+import BotMessageService from "./services/bot-message/bot-message.service";
 
-function App() {
+interface Message {
+  user: boolean;
+  text: string;
+}
+
+const App: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const messageService = new BotMessageService();
+
+  const handleSend = async (message: string) => {
+    if (message.trim()) {      
+      setMessages((prev) => [{ user: true, text: message }, ...prev]);
+      
+      setTimeout(async () => {
+        const aiResponse = await messageService.handleMessage(message);
+        setMessages((prev) => [{ user: false, text: aiResponse }, ...prev]);
+      }, 1000);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="chat-container">
+      <Header />
+      <Messages messages={messages} />
+      <Input onSend={handleSend} />
     </div>
   );
-}
+};
 
 export default App;
