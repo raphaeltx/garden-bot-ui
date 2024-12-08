@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garden-bot-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garden-bot-ui
+  template:
+    metadata:
+      labels:
+        app: garden-bot-ui
+    spec:
+      containers:
+      - name: garden-bot-ui
+        image: garden-bot-ui
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: garden-bot-ui-config
